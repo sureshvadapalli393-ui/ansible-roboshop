@@ -4,29 +4,31 @@
   vars:
     ami_id: ami-09c813fb71547fc4f
     sg_id: sg-0c8311807a45cafaa
-    hostzone_id: Z08539782KOSSJ0J5OYLP
+    zone_id: Z08539782KOSSJ0J5OYLP
     instance:
     - mongodb
   tasks:
   - name: create ec2 instance
     amazon.aws.ec2_instance:
       name: "{{ item }}"
-      instance_type: "t2.micro"
+      instance_type: t3.micro
       security_group: "{{ sg_id }}"
       image_id: "{{ ami_id }}"
       tags:
         Name: "{{ item }}"
     loop: "{{ instances }}"
-    register: ec2_output 
+    register: ec2_output
 
+  - name: print the ec2_output
+    ansible.builtin.debug:
+      msg: "{{ ec2_output }}"
 
-  - name: public IP 
+  - name: print public_ip
     ansible.builtin.debug: 
       msg: "{{ item.instances[0].public_ip_address }}"
-    looop: "{{ ec2_output.results }}"
+    loop: "{{ ec2_output.results }}"
 
-
-  - name: private IP 
+  - name: print private_ip
     ansible.builtin.debug: 
       msg: "{{ item.instances[0].private_ip_address }}"
-    looop: "{{ ec2_output.results }}"
+    loop: "{{ ec2_output.results }}"

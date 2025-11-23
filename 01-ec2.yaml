@@ -1,0 +1,25 @@
+- name: create ec2
+  hosts: local
+  connection: local
+  vars:
+    ami_id: ami-09c813fb71547fc4f
+    sg_id: sg-0c8311807a45cafaa
+    hostzone_id: Z08539782KOSSJ0J5OYLP
+    instance:
+    - mongodb
+  tasks:
+  - name: create ec2 instance
+    amazon.aws.ec2_instance:
+      name: "{{ item }}"
+      instance_type: "t2.micro"
+      security_group: "{{ sg_id }}"
+      image_id: "{{ ami_id }}"
+      tags:
+        Name: "{{ item }}"
+    loop: "{{ instance }}"
+    register: ec2_output 
+
+  - name: print th e ec2_output
+    ansible.builtin.debug:
+      msg: "{{ ec2_output }}"
+

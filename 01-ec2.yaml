@@ -5,7 +5,7 @@
     ami_id: ami-09c813fb71547fc4f
     sg_id: sg-0c8311807a45cafaa
     zone_id: Z08539782KOSSJ0J5OYLP
-    instance:
+    instances:
     - mongodb
   tasks:
   - name: create ec2 instance
